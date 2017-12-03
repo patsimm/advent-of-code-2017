@@ -1,3 +1,8 @@
+import {
+  initialStressTestMatrix,
+  nextStressTestMatrixIncrement,
+  StressTestMatrix,
+} from './stressTestMatrix'
 import axios from 'axios'
 import inputs from './input'
 
@@ -98,8 +103,58 @@ export function day2_1() {
 }
 
 export function day2_2() {
-  console.log('*** DAY 2 - Star #1')
+  console.log('*** DAY 2 - Star #2')
   const input = inputs.day2
   const result = calcChecksum(input, true)
+  console.log('Result: ' + result)
+}
+
+// **********************
+// ******* DAY 3 ********
+// **********************
+
+export function calcSpiralNumber(input: number): number {
+  if (input <= 1) {
+    return 0
+  }
+  return Math.floor((Math.sqrt(input - 1) - 1) / 2) + 1
+}
+
+export function spiralMemoryDistance(input: number): number {
+  const spiralNumber = calcSpiralNumber(input)
+  if (spiralNumber === 0) {
+    return 0
+  }
+  const maxNumberInSpiral = Math.pow(2 * spiralNumber + 1, 2)
+  const differenceFromMax = maxNumberInSpiral - input
+
+  const offsetX = Math.abs(
+    differenceFromMax % (2 * spiralNumber) - spiralNumber,
+  )
+  return spiralNumber + offsetX
+}
+
+export function stressTest(input: number): number {
+  let stressTestMatrix = initialStressTestMatrix
+  let value: number
+  do {
+    stressTestMatrix = nextStressTestMatrixIncrement(stressTestMatrix)
+    const { matrix, lastSet, lastDirection } = stressTestMatrix
+    value = matrix[lastSet[0]][lastSet[1]]
+  } while (value <= input)
+  return value
+}
+
+export function day3_1() {
+  console.log('*** DAY 3 - Star #1')
+  const input = inputs.day3
+  const result = spiralMemoryDistance(input)
+  console.log('Result: ' + result)
+}
+
+export function day3_2() {
+  console.log('*** DAY 3 - Star #2')
+  const input = inputs.day3
+  const result = stressTest(input)
   console.log('Result: ' + result)
 }

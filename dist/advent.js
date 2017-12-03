@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const stressTestMatrix_1 = require("./stressTestMatrix");
 const input_1 = require("./input");
 function stringToNumberArray(input) {
     const chars = new Array(input.length);
@@ -78,10 +79,53 @@ function day2_1() {
 }
 exports.day2_1 = day2_1;
 function day2_2() {
-    console.log('*** DAY 2 - Star #1');
+    console.log('*** DAY 2 - Star #2');
     const input = input_1.default.day2;
     const result = calcChecksum(input, true);
     console.log('Result: ' + result);
 }
 exports.day2_2 = day2_2;
+function calcSpiralNumber(input) {
+    if (input <= 1) {
+        return 0;
+    }
+    return Math.floor((Math.sqrt(input - 1) - 1) / 2) + 1;
+}
+exports.calcSpiralNumber = calcSpiralNumber;
+function spiralMemoryDistance(input) {
+    const spiralNumber = calcSpiralNumber(input);
+    if (spiralNumber === 0) {
+        return 0;
+    }
+    const maxNumberInSpiral = Math.pow(2 * spiralNumber + 1, 2);
+    const differenceFromMax = maxNumberInSpiral - input;
+    const offsetX = Math.abs(differenceFromMax % (2 * spiralNumber) - spiralNumber);
+    return spiralNumber + offsetX;
+}
+exports.spiralMemoryDistance = spiralMemoryDistance;
+function stressTest(input) {
+    let stressTestMatrix = stressTestMatrix_1.initialStressTestMatrix;
+    let value;
+    do {
+        stressTestMatrix = stressTestMatrix_1.nextStressTestMatrixIncrement(stressTestMatrix);
+        const { matrix, lastSet, lastDirection } = stressTestMatrix;
+        value = matrix[lastSet[0]][lastSet[1]];
+    } while (value <= input);
+    return value;
+}
+exports.stressTest = stressTest;
+function day3_1() {
+    console.log('*** DAY 3 - Star #1');
+    const input = input_1.default.day3;
+    const result = spiralMemoryDistance(input);
+    console.log('Result: ' + result);
+}
+exports.day3_1 = day3_1;
+function day3_2() {
+    console.log('*** DAY 3 - Star #2');
+    const input = input_1.default.day3;
+    const result = stressTest(input);
+    console.log('Result: ' + result);
+}
+exports.day3_2 = day3_2;
 //# sourceMappingURL=advent.js.map
