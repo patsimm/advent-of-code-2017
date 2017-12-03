@@ -4,7 +4,7 @@
   "main": "dist/advent.js",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/advent.js",
+    "start": "node dist/main.js",
     "test": "jest -c=jest.json",
     "build": "tsc"
   },
