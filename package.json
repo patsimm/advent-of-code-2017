@@ -1,0 +1,21 @@
+{
+  "name": "adventofcode",
+  "version": "1.0.0",
+  "main": "dist/advent.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/advent.js",
+    "test": "jest -c=jest.json",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.17.1",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.2.4",
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.8"
+  }
+}
