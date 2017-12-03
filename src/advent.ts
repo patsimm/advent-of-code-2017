@@ -3,7 +3,6 @@ import {
   nextStressTestMatrixIncrement,
   StressTestMatrix,
 } from './stressTestMatrix'
-import axios from 'axios'
 import inputs from './input'
 
 // **********************
@@ -139,8 +138,8 @@ export function stressTest(input: number): number {
   let value: number
   do {
     stressTestMatrix = nextStressTestMatrixIncrement(stressTestMatrix)
-    const { matrix, lastSet, lastDirection } = stressTestMatrix
-    value = matrix[lastSet[0]][lastSet[1]]
+    const { matrix, lastPosition, lastDirection } = stressTestMatrix
+    value = matrix[lastPosition[0]][lastPosition[1]]
   } while (value <= input)
   return value
 }

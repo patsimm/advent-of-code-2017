@@ -24,13 +24,13 @@ directionValueMap[Direction.WEST] = [-1, 0]
 
 export interface StressTestMatrix {
   matrix: number[][]
-  lastSet: number[]
+  lastPosition: number[]
   lastDirection: Direction
 }
 
 export const initialStressTestMatrix: StressTestMatrix = {
   matrix: [[1], []],
-  lastSet: [0, 0],
+  lastPosition: [0, 0],
   lastDirection: Direction.SOUTH,
 }
 
@@ -38,9 +38,12 @@ function cloneStressTestMatrix(
   stressTestMatrix: StressTestMatrix,
 ): StressTestMatrix {
   const matrix = stressTestMatrix.matrix.map(row => row.map(value => value))
-  const lastSet = [stressTestMatrix.lastSet[0], stressTestMatrix.lastSet[1]]
+  const lastPosition = [
+    stressTestMatrix.lastPosition[0],
+    stressTestMatrix.lastPosition[1],
+  ]
   const lastDirection = stressTestMatrix.lastDirection
-  return { matrix, lastSet, lastDirection }
+  return { matrix, lastPosition, lastDirection }
 }
 
 export function calcNeighbourSum(
@@ -70,49 +73,49 @@ export function calcNeighbourSum(
 }
 
 function growWest(stressTestMatrix: StressTestMatrix): StressTestMatrix {
-  let { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  let { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   matrix.unshift([])
-  lastSet = [lastSet[0] + 1, lastSet[1]]
-  return { matrix, lastSet, lastDirection }
+  lastPosition = [lastPosition[0] + 1, lastPosition[1]]
+  return { matrix, lastPosition, lastDirection }
 }
 
 function growSouth(stressTestMatrix: StressTestMatrix): StressTestMatrix {
-  let { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  let { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   matrix = matrix.map(row => {
     row.unshift(null)
     return row
   })
-  lastSet = [lastSet[0], lastSet[1] + 1]
-  return { matrix, lastSet, lastDirection }
+  lastPosition = [lastPosition[0], lastPosition[1] + 1]
+  return { matrix, lastPosition, lastDirection }
 }
 
 function growEast(stressTestMatrix: StressTestMatrix): StressTestMatrix {
-  let { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  let { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   matrix.push([])
-  return { matrix, lastSet, lastDirection }
+  return { matrix, lastPosition, lastDirection }
 }
 
 function growNorth(stressTestMatrix: StressTestMatrix): StressTestMatrix {
-  let { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  let { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   matrix = matrix.map(row => {
     row.push(null)
     return row
   })
-  return { matrix, lastSet, lastDirection }
+  return { matrix, lastPosition, lastDirection }
 }
 
 export function growMatrix(
   stressTestMatrix: StressTestMatrix,
 ): StressTestMatrix {
-  const { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  const { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   switch (lastDirection) {
@@ -130,22 +133,22 @@ export function growMatrix(
 export function nextStressTestMatrixIncrement(
   stressTestMatrix: StressTestMatrix,
 ): StressTestMatrix {
-  let { matrix, lastSet, lastDirection } = cloneStressTestMatrix(
+  let { matrix, lastPosition, lastDirection } = cloneStressTestMatrix(
     stressTestMatrix,
   )
   const nextDir = directionValueMap[nextDirection(lastDirection)]
   const lastDir = directionValueMap[lastDirection]
-  const toCheck = [lastSet[0] + nextDir[0], lastSet[1] + nextDir[1]]
+  const toCheck = [lastPosition[0] + nextDir[0], lastPosition[1] + nextDir[1]]
 
   let nextPos: number[]
   if (matrix[toCheck[0]][toCheck[1]]) {
     // go further on in same direction
-    nextPos = [lastSet[0] + lastDir[0], lastSet[1] + lastDir[1]]
+    nextPos = [lastPosition[0] + lastDir[0], lastPosition[1] + lastDir[1]]
     if (nextPos[0] < 0 || nextPos[1] < 0 || !matrix[nextPos[0]]) {
       stressTestMatrix = growMatrix(stressTestMatrix)
       matrix = stressTestMatrix.matrix
-      lastSet = stressTestMatrix.lastSet
-      nextPos = [lastSet[0] + lastDir[0], lastSet[1] + lastDir[1]]
+      lastPosition = stressTestMatrix.lastPosition
+      nextPos = [lastPosition[0] + lastDir[0], lastPosition[1] + lastDir[1]]
     }
   } else {
     // go in next direction
@@ -155,6 +158,6 @@ export function nextStressTestMatrixIncrement(
 
   const sumNeighbours = calcNeighbourSum(matrix, nextPos)
   matrix[nextPos[0]][nextPos[1]] = sumNeighbours
-  lastSet = nextPos
-  return { matrix, lastSet, lastDirection }
+  lastPosition = nextPos
+  return { matrix, lastPosition, lastDirection }
 }

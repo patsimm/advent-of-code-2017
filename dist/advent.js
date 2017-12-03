@@ -108,8 +108,8 @@ function stressTest(input) {
     let value;
     do {
         stressTestMatrix = stressTestMatrix_1.nextStressTestMatrixIncrement(stressTestMatrix);
-        const { matrix, lastSet, lastDirection } = stressTestMatrix;
-        value = matrix[lastSet[0]][lastSet[1]];
+        const { matrix, lastPosition, lastDirection } = stressTestMatrix;
+        value = matrix[lastPosition[0]][lastPosition[1]];
     } while (value <= input);
     return value;
 }

@@ -97,7 +97,7 @@ describe('stressTestMatrix', () => {
           [   10,   1,    1 ],
           [   11,  23,   25 ],
         ],
-        lastSet: [2, 2],
+        lastPosition: [2, 2],
         lastDirection: Direction.NORTH,
       }
       const expected: StressTestMatrix = {
@@ -107,7 +107,7 @@ describe('stressTestMatrix', () => {
           [   10,   1,    1, null ],
           [   11,  23,   25, null ],
         ],
-        lastSet: [2, 2],
+        lastPosition: [2, 2],
         lastDirection: Direction.NORTH,
       }
       const result = growMatrix(input)
@@ -121,7 +121,7 @@ describe('stressTestMatrix', () => {
           [ 5,    4,    2],
           [ 10,   1,    1],
         ],
-        lastSet: [1, 0],
+        lastPosition: [1, 0],
         lastDirection: Direction.EAST,
       }
       const expected: StressTestMatrix = {
@@ -131,7 +131,7 @@ describe('stressTestMatrix', () => {
           [ 10,   1,    1],
           []
         ],
-        lastSet: [1, 0],
+        lastPosition: [1, 0],
         lastDirection: Direction.EAST,
       }
       const result = growMatrix(input)
@@ -147,7 +147,7 @@ describe('stressTestMatrix', () => {
           [   10,   1,    1, 54 ],
           [   11,  23,   25, 26 ],
         ],
-        lastSet: [0, 0],
+        lastPosition: [0, 0],
         lastDirection: Direction.SOUTH,
       }
       const expected: StressTestMatrix = {
@@ -158,7 +158,7 @@ describe('stressTestMatrix', () => {
           [ null,  10,   1,    1, 54 ],
           [ null,  11,  23,   25, 26 ],
         ],
-        lastSet: [0, 1],
+        lastPosition: [0, 1],
         lastDirection: Direction.SOUTH,
       }
       const result = growMatrix(input)
@@ -173,7 +173,7 @@ describe('stressTestMatrix', () => {
           [ 10,   1,    1, 54 ],
           [ 11,  23,   25, 26 ],
         ],
-        lastSet: [0, 3],
+        lastPosition: [0, 3],
         lastDirection: Direction.WEST,
       }
       const expected: StressTestMatrix = {
@@ -184,7 +184,7 @@ describe('stressTestMatrix', () => {
           [   10,    1,    1, 54  ],
           [   11,   23,   25, 26  ],
         ],
-        lastSet: [1, 3],
+        lastPosition: [1, 3],
         lastDirection: Direction.WEST,
       }
       const result = growMatrix(input)
@@ -197,7 +197,7 @@ describe('stressTestMatrix', () => {
       const input = initialStressTestMatrix
       const expected: StressTestMatrix = {
         matrix: [[1], [1]],
-        lastSet: [1, 0],
+        lastPosition: [1, 0],
         lastDirection: Direction.EAST,
       }
       const result = nextStressTestMatrixIncrement(input)
@@ -207,7 +207,7 @@ describe('stressTestMatrix', () => {
     it('should return second increment if given the second matrix', () => {
       const input: StressTestMatrix = {
         matrix: [[1], [1]],
-        lastSet: [1, 0],
+        lastPosition: [1, 0],
         lastDirection: Direction.EAST,
       }
       const expected: StressTestMatrix = {
@@ -216,7 +216,7 @@ describe('stressTestMatrix', () => {
             [ 1       ],
             [ 1,  2   ]
           ],
-        lastSet: [1, 1],
+        lastPosition: [1, 1],
         lastDirection: Direction.NORTH,
       }
       const result = nextStressTestMatrixIncrement(input)
@@ -230,7 +230,7 @@ describe('stressTestMatrix', () => {
             [ 1       ],
             [ 1,  2   ]
           ],
-        lastSet: [1, 1],
+        lastPosition: [1, 1],
         lastDirection: Direction.NORTH,
       }
       const expected: StressTestMatrix = {
@@ -239,7 +239,7 @@ describe('stressTestMatrix', () => {
             [ 1,  4 ],
             [ 1,  2 ]
           ],
-        lastSet: [0, 1],
+        lastPosition: [0, 1],
         lastDirection: Direction.WEST,
       }
       const result = nextStressTestMatrixIncrement(input)
@@ -254,7 +254,7 @@ describe('stressTestMatrix', () => {
             [ 1,  4 ],
             [ 1,  2 ]
           ],
-        lastSet: [0, 1],
+        lastPosition: [0, 1],
         lastDirection: Direction.WEST,
       }
       const result = nextStressTestMatrixIncrement(
@@ -272,7 +272,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 3],
+        lastPosition: [0, 3],
         lastDirection: Direction.WEST,
       }
       const expected: StressTestMatrix = {
@@ -284,7 +284,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 3],
+        lastPosition: [0, 3],
         lastDirection: Direction.WEST,
       }
       const result = nextStressTestMatrixIncrement(input)
@@ -301,7 +301,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 2],
+        lastPosition: [0, 2],
         lastDirection: Direction.SOUTH,
       }
       const expected: StressTestMatrix = {
@@ -313,7 +313,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 1],
+        lastPosition: [0, 1],
         lastDirection: Direction.SOUTH,
       }
       const result = nextStressTestMatrixIncrement(input)
@@ -329,7 +329,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 3],
+        lastPosition: [0, 3],
         lastDirection: Direction.WEST,
       }
       const expected: StressTestMatrix = {
@@ -341,7 +341,7 @@ describe('stressTestMatrix', () => {
             [ 25,  1,  2, 122 ],
             [ 26, 54, 57, 59  ]
           ],
-        lastSet: [0, 1],
+        lastPosition: [0, 1],
         lastDirection: Direction.SOUTH,
       }
       let partResult = nextStressTestMatrixIncrement(input)
