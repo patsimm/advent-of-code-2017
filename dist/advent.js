@@ -128,4 +128,76 @@ function day3_2() {
     console.log('Result: ' + result);
 }
 exports.day3_2 = day3_2;
+function isValidPassphrase(phrase) {
+    const words = phrase.split(' ');
+    for (let i = 0; i < words.length; i++) {
+        const currentWord = words.pop();
+        if (words.indexOf(currentWord) != -1) {
+            return false;
+        }
+        words.unshift(currentWord);
+    }
+    return true;
+}
+exports.isValidPassphrase = isValidPassphrase;
+function countValidPassphrases(input, anagram = false) {
+    const phrases = input.split('\n').map(phrase => phrase.trim());
+    return phrases.reduce((count, phrase) => {
+        if (anagram) {
+            return isValidPassphraseAnagram(phrase) ? count + 1 : count;
+        }
+        return isValidPassphrase(phrase) ? count + 1 : count;
+    }, 0);
+}
+exports.countValidPassphrases = countValidPassphrases;
+function countLetters(word) {
+    const letterCount = {};
+    for (let i = 0; i < word.length; i++) {
+        const letter = word.charAt(i);
+        if (!letterCount[letter]) {
+            letterCount[letter] = 1;
+        }
+        else {
+            letterCount[letter] += 1;
+        }
+    }
+    return letterCount;
+}
+exports.countLetters = countLetters;
+function isAnagram(word1, word2) {
+    if (word1.length != word2.length) {
+        return false;
+    }
+    const word1Count = countLetters(word1);
+    const word2Count = countLetters(word2);
+    const differs = Object.keys(word1Count).some(element => word1Count[element] != word2Count[element]);
+    return !differs;
+}
+exports.isAnagram = isAnagram;
+function isValidPassphraseAnagram(phrase) {
+    const words = phrase.split(' ');
+    for (let i = 0; i < words.length; i++) {
+        const currentWord = words.pop();
+        if (words.some(word => isAnagram(currentWord, word))) {
+            return false;
+        }
+        words.unshift(currentWord);
+    }
+    return true;
+}
+exports.isValidPassphraseAnagram = isValidPassphraseAnagram;
+function day4_1() {
+    console.log('*** DAY 4 - Star #1');
+    const input = input_1.default.day4;
+    const result = countValidPassphrases(input);
+    console.log('Result: ' + result);
+}
+exports.day4_1 = day4_1;
+function day4_2() {
+    console.log('*** DAY 4 - Star #2');
+    const input = input_1.default.day4;
+    const result = countValidPassphrases(input, true);
+    console.log('Result: ' + result);
+}
+exports.day4_2 = day4_2;
 //# sourceMappingURL=advent.js.map

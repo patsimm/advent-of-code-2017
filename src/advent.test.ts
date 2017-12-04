@@ -1,13 +1,19 @@
+import { ExecOptionsWithBufferEncoding } from 'child_process'
 import {
   calcChecksum,
   calcSpiralNumber,
+  countLetters,
+  countValidPassphrases,
+  directions,
   initialStressTestMatrix,
+  isAnagram,
+  isValidPassphrase,
+  isValidPassphraseAnagram,
   nextStressTestMatrixIncrement,
   solveCaptcha,
   spiralMemoryDistance,
   stressTest,
   StressTestMatrix,
-  directions,
 } from './advent'
 
 describe('advent advent', () => {
@@ -270,6 +276,209 @@ describe('advent advent', () => {
       const input = 122
       const expected = 133
       const result = stressTest(input)
+      expect(result).toEqual(expected)
+    })
+  })
+
+  // **********************
+  // ******* DAY 4 ********
+  // **********************
+  describe('day 4 - star 1', () => {
+    describe('isValidPassphrase()', () => {
+      it('should return true if given a string without whitespace', () => {
+        const input = 'aa'
+        const expected = true
+        const result = isValidPassphrase(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return false if given a string with two same words and whitespace in between', () => {
+        const input = 'aa aa'
+        const expected = false
+        const result = isValidPassphrase(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true if given a string with two differents words and whitespace in between', () => {
+        const input = 'aa bb'
+        const expected = true
+        const result = isValidPassphrase(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true if given a string with differents words and whitespace in between', () => {
+        const input = 'aa bb cc dd hallo test wow'
+        const expected = true
+        const result = isValidPassphrase(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return false if given a string with two same words and others', () => {
+        const input = 'aa bb cc dd hallo test wow aa'
+        const expected = false
+        const result = isValidPassphrase(input)
+        expect(result).toEqual(expected)
+      })
+    })
+
+    it('should return 1 if given one valid string', () => {
+      const input = `aa bb cc`
+      const expected = 1
+      const result = countValidPassphrases(input)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 2 if given one valid string', () => {
+      const input = `aa bb cc
+      aa bb cc dd ee`
+      const expected = 2
+      const result = countValidPassphrases(input)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 1 if given one valid string and one invalid', () => {
+      const input = `aa bb cc aa
+      aa bb cc dd ee`
+      const expected = 1
+      const result = countValidPassphrases(input)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 4 if given 4 valid string and one invalid', () => {
+      const input = `aa bb cc
+      aa bb  asdf cc dd ee
+      aa bb asf wera fasd fcc dd ee
+      aa bb cc dd ee ee
+      aa bb ads dfesdf cc dd ee`
+      const expected = 4
+      const result = countValidPassphrases(input)
+      expect(result).toEqual(expected)
+    })
+  })
+  describe('day 4 - star 2', () => {
+    describe('countLetters()', () => {
+      it('should count letters of easy word', () => {
+        const input = 'world'
+        const expected = { w: 1, o: 1, r: 1, l: 1, d: 1 }
+        const result = countLetters(input)
+        expect(result).toEqual(expected)
+      })
+    })
+    describe('isAnagram()', () => {
+      it('should return false if is not an anagram', () => {
+        const input1 = 'abcd'
+        const input2 = 'efgh'
+        const expected = false
+        const result = isAnagram(input1, input2)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true if two same words are given', () => {
+        const input1 = 'abcd'
+        const input2 = 'abcd'
+        const expected = true
+        const result = isAnagram(input1, input2)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return false if two words of different length are given', () => {
+        const input1 = 'abcd'
+        const input2 = 'bcdasfdaa'
+        const expected = false
+        const result = isAnagram(input1, input2)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true if two anagrams are given', () => {
+        const input1 = 'abcd'
+        const input2 = 'bcda'
+        const expected = true
+        const result = isAnagram(input1, input2)
+        expect(result).toEqual(expected)
+      })
+    })
+    describe('isValidPassphraseAnagram()', () => {
+      it('should return false if an anagram is in the string', () => {
+        const input = 'abcd ghoiaeh asf f sadfh sgh asfd bcda'
+        const expected = false
+        const result = isValidPassphraseAnagram(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true if no anagram is in the string', () => {
+        const input = 'abcd ghoiaeh asf f sadfh sgh asfd'
+        const expected = true
+        const result = isValidPassphraseAnagram(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return true', () => {
+        const input = 'iiii oiii ooii oooi oooo'
+        const expected = true
+        const result = isValidPassphraseAnagram(input)
+        expect(result).toEqual(expected)
+      })
+
+      it('should return false', () => {
+        const input = 'oiii ioii iioi iiio'
+        const expected = false
+        const result = isValidPassphraseAnagram(input)
+        expect(result).toEqual(expected)
+      })
+    })
+    it('should return 1 if given one valid string', () => {
+      const input = `aa bb cc`
+      const expected = 1
+      const result = countValidPassphrases(input, true)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 2 if given one valid string', () => {
+      const input = `aa bb cc
+      aa bb cc dd ee`
+      const expected = 2
+      const result = countValidPassphrases(input, true)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 1 if given one valid string and one invalid', () => {
+      const input = `aa bb cc aa
+      aa bb cc dd ee`
+      const expected = 1
+      const result = countValidPassphrases(input, true)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 4 if given 4 valid string and one invalid', () => {
+      const input = `aa bb cc
+      aa bb  asdf cc dd ee
+      aa bb asf wera fasd fcc dd ee asdf
+      aa bb cc dd ee
+      aa bb ads dfesdf cc dd ee`
+      const expected = 4
+      const result = countValidPassphrases(input, true)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 4 if given 4 valid string and last one invalid', () => {
+      const input = `aa bb cc
+      aa bb  asdf cc dd ee
+      aa bb asf wera fasd fcc dd ee
+      aa bb cc dd ee
+      aa bb ads dfesdf cc dd ee fesddf`
+      const expected = 4
+      const result = countValidPassphrases(input, true)
+      expect(result).toEqual(expected)
+    })
+
+    it('should return 3 if given 3 valid string and two invalid', () => {
+      const input = `aa bb cc
+      aa bb  asdf cc dd ee fsda
+      aa bb asf wera fasd fcc dd ee
+      aa bb cc dd ee
+      aa bb ads dfesdf cc dd ee fesddf`
+      const expected = 3
+      const result = countValidPassphrases(input, true)
       expect(result).toEqual(expected)
     })
   })

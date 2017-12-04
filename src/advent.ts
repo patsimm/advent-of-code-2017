@@ -4,6 +4,7 @@ import {
   StressTestMatrix,
 } from './stressTestMatrix'
 import inputs from './input'
+import { currentId } from 'async_hooks'
 
 // **********************
 // ****** HELPERS *******
@@ -155,5 +156,82 @@ export function day3_2() {
   console.log('*** DAY 3 - Star #2')
   const input = inputs.day3
   const result = stressTest(input)
+  console.log('Result: ' + result)
+}
+
+// **********************
+// ******* DAY 4 ********
+// **********************
+
+export function isValidPassphrase(phrase: string): boolean {
+  const words = phrase.split(' ')
+  for (let i = 0; i < words.length; i++) {
+    const currentWord = words.pop()
+    if (words.indexOf(currentWord) != -1) {
+      return false
+    }
+    words.unshift(currentWord)
+  }
+  return true
+}
+
+export function countValidPassphrases(input: string, anagram = false): number {
+  const phrases = input.split('\n').map(phrase => phrase.trim())
+  return phrases.reduce((count, phrase) => {
+    if (anagram) {
+      return isValidPassphraseAnagram(phrase) ? count + 1 : count
+    }
+    return isValidPassphrase(phrase) ? count + 1 : count
+  }, 0)
+}
+
+export function countLetters(word: string): { [key: string]: number } {
+  const letterCount: { [key: string]: number } = {}
+  for (let i = 0; i < word.length; i++) {
+    const letter = word.charAt(i)
+    if (!letterCount[letter]) {
+      letterCount[letter] = 1
+    } else {
+      letterCount[letter] += 1
+    }
+  }
+  return letterCount
+}
+
+export function isAnagram(word1: string, word2: string): boolean {
+  if (word1.length != word2.length) {
+    return false
+  }
+  const word1Count = countLetters(word1)
+  const word2Count = countLetters(word2)
+  const differs = Object.keys(word1Count).some(
+    element => word1Count[element] != word2Count[element],
+  )
+  return !differs
+}
+
+export function isValidPassphraseAnagram(phrase: string): boolean {
+  const words = phrase.split(' ')
+  for (let i = 0; i < words.length; i++) {
+    const currentWord = words.pop()
+    if (words.some(word => isAnagram(currentWord, word))) {
+      return false
+    }
+    words.unshift(currentWord)
+  }
+  return true
+}
+
+export function day4_1() {
+  console.log('*** DAY 4 - Star #1')
+  const input = inputs.day4
+  const result = countValidPassphrases(input)
+  console.log('Result: ' + result)
+}
+
+export function day4_2() {
+  console.log('*** DAY 4 - Star #2')
+  const input = inputs.day4
+  const result = countValidPassphrases(input, true)
   console.log('Result: ' + result)
 }
